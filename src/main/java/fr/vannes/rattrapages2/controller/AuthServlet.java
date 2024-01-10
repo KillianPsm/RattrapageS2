@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 @WebServlet({"/auth"})
@@ -57,7 +56,7 @@ public class AuthServlet extends HttpServlet {
         String password = request.getParameter("inputPwd");
 
         // Vérifiez si l'utilisateur existe
-        User user = userDAO.read(login);
+        User user = userDAO.readByName(login);
 
         if (user != null && userDAO.authentification(login, password)) {
             int role = user.getRole();

@@ -39,10 +39,23 @@
         <td>
             <div class="btn-group" role="group">
                 <a href="#" class="btn btn-outline-secondary">Modifier</a>
-                <a href="delete" class="btn btn-outline-danger">Supprimer</a>
+                <a href="#" class="btn btn-outline-danger"
+                   onclick="confirmDelete(<%= student.getId() %>);">Supprimer</a>
             </div>
         </td>
     </tr>
     <% } %>
     </tbody>
 </table>
+
+<script>
+    function confirmDelete(studentId) {
+        var confirmation = confirm("Voulez-vous vraiment supprimer cet étudiant ?");
+        if (confirmation) {
+            window.location.href = '<%= request.getContextPath() %>/teacher?action=deleteStudent&id=' + studentId;
+        }
+    }
+</script>
+
+</body>
+</html>

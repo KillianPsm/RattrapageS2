@@ -69,6 +69,23 @@ public class TeacherServlet extends HttpServlet {
                 // Affichage de la page d'ajout de cours
                 RequestDispatcher rd = request.getRequestDispatcher("/addCourse.jsp");
                 rd.forward(request, response);
+
+            } else if ("deleteStudent".equals(action)) {
+                // Recuperation de l'ID de l'etudiant a supprimer
+                int studentId = Integer.parseInt(request.getParameter("id"));
+                // Suppression de l'etudiant de la base de donnees
+                userDAO.delete(studentId);
+                // Redirection vers la liste des etudiants apres la suppression
+                response.sendRedirect(request.getContextPath() + "/teacher?action=listStudent");
+
+            } else if ("deleteCourse".equals(action)) {
+                // Recuperation de l'ID du cours a supprimer
+                int courseId = Integer.parseInt(request.getParameter("id"));
+                // Suppression du cours de la base de donnees
+                courseDAO.delete(courseId);
+                // Redirection vers la liste des cours apres la suppression
+                response.sendRedirect(request.getContextPath() + "/teacher?action=listCourse");
+
             }
         }
     }
@@ -109,6 +126,7 @@ public class TeacherServlet extends HttpServlet {
 
             // Redirection vers la liste des cours apres l'ajout
             response.sendRedirect(request.getContextPath() + "/teacher?action=listCourse");
+
         }
     }
 }

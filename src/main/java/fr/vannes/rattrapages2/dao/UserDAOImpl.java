@@ -64,7 +64,33 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public User read(String log) {
+    public User read(int id) {
+        try {
+            String query = "SELECT * FROM " + TABLE + " WHERE " + LASTNAME + "=?";
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setInt(1, id);
+            ResultSet resultSet = pst.executeQuery();
+
+            User user = new User();
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt(ID));
+                user.setLastname(resultSet.getString(LASTNAME));
+                user.setFirstname(resultSet.getString(FIRSTNAME));
+                user.setBirthdate(resultSet.getDate(BIRTHDATE));
+                user.setClassName(resultSet.getString(CLASSNAME));
+                user.setPwd(resultSet.getString(PASSWORD));
+                user.setRole(resultSet.getInt(ROLE));
+            }
+
+            resultSet.close();
+            pst.close();
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User readByName(String log) {
         try {
             String query = "SELECT * FROM " + TABLE + " WHERE " + LASTNAME + "=?";
             PreparedStatement pst = conn.prepareStatement(query);

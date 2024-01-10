@@ -10,7 +10,9 @@ public interface UserDAO {
 
     void create(User user);
 
-    User read(String log);
+    User read(int id);
+
+    User readByName(String log);
 
     List<User> listAllStudents();
 
