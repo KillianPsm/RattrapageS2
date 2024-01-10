@@ -9,6 +9,8 @@ public interface CourseDAO {
 
     Course read(int id);
 
+    Course readByCode(String code);
+
     List<Course> listAllCourses();
 
     void update(Course course);

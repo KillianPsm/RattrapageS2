@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
@@ -49,7 +50,7 @@ public class UserDAOImpl implements UserDAO {
 
     public void create(User user) {
         try {
-            String q = "INSERT INTO " + TABLE + " (" + FIRSTNAME + ", " + LASTNAME + ", " + BIRTHDATE + ", " + CLASSNAME + ", " + PASSWORD + ", " + ROLE + ") VALUES (?,?,?,?,?,?)";
+            String q = "INSERT INTO " + TABLE + " (" + LASTNAME + ", " + FIRSTNAME + ", " + BIRTHDATE + ", " + CLASSNAME + ", " + PASSWORD + ", " + ROLE + ") VALUES (?,?,?,?,?,?)";
             PreparedStatement pst = this.conn.prepareStatement(q);
             pst.setString(1, user.getLastname());
             pst.setString(2, user.getFirstname());
@@ -80,6 +81,8 @@ public class UserDAOImpl implements UserDAO {
                 user.setClassName(resultSet.getString(CLASSNAME));
                 user.setPwd(resultSet.getString(PASSWORD));
                 user.setRole(resultSet.getInt(ROLE));
+            } else {
+                return null;
             }
 
             resultSet.close();
@@ -106,6 +109,8 @@ public class UserDAOImpl implements UserDAO {
                 user.setClassName(resultSet.getString(CLASSNAME));
                 user.setPwd(resultSet.getString(PASSWORD));
                 user.setRole(resultSet.getInt(ROLE));
+            } else {
+                System.out.println("Aucun utilisateur trouvé avec le nom : " + log);
             }
 
             resultSet.close();
@@ -154,15 +159,21 @@ public class UserDAOImpl implements UserDAO {
                     LASTNAME + "=?," +
                     FIRSTNAME + "=?," +
                     BIRTHDATE + "=?," +
-                    CLASSNAME + "=? " +
+                    CLASSNAME + "=?, " +
+                    PASSWORD + "=?, " +
+                    ROLE + "=? " +
                     "WHERE " + ID + "=?";
             PreparedStatement pst = conn.prepareStatement(query);
             pst.setString(1, user.getLastname());
             pst.setString(2, user.getFirstname());
             pst.setDate(3, user.getBirthdate());
             pst.setString(4, user.getClassName());
-            pst.setInt(5, user.getId());
+            pst.setString(5, user.getPwd());
+            pst.setInt(6, user.getRole());
+            pst.setInt(7, user.getId());
+            System.out.println("Executing update query for user ID: " + user.getId());
             pst.executeUpdate();
+            System.out.println("Update successful for user ID: " + user.getId());
             pst.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);

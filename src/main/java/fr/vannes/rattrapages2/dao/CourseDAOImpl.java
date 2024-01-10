@@ -52,6 +52,33 @@ public class CourseDAOImpl implements CourseDAO {
                 course.setId(resultSet.getInt(ID));
                 course.setCode(resultSet.getString(CODE));
                 course.setLabel(resultSet.getString(LABEL));
+            } else {
+                return null;
+            }
+
+            resultSet.close();
+            pst.close();
+            return course;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Course readByCode(String code) {
+        try {
+            String query = "SELECT * FROM " + TABLE + " WHERE " + CODE + "=?";
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, code);
+            ResultSet resultSet = pst.executeQuery();
+
+            Course course = new Course();
+            if (resultSet.next()) {
+                course.setId(resultSet.getInt(ID));
+                course.setCode(resultSet.getString(CODE));
+                course.setLabel(resultSet.getString(LABEL));
+            } else {
+                return null;
             }
 
             resultSet.close();
